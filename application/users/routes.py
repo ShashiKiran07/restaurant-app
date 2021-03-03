@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, redirect, flash, request
-from application.users.forms import LoginForm, RegistrationForm, UpdateAccountForm
+from flask import Blueprint, render_template, redirect, flash, request, url_for
+from application.users.forms import LoginForm, RegistrationForm, UpdateProfileForm
 from application import db, bcrypt
 from application.models import User, Dish, Order
 from flask_login import login_user, logout_user, current_user, login_required
@@ -32,7 +32,7 @@ def login():
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect('/homepage')
+            return redirect(next_page) if next_page else redirect('/')
         else:
             flash('Failed to log in. Please check email and password', 'danger')
     return render_template('login.html', title = 'Login', form=form)
@@ -41,3 +41,17 @@ def login():
 def logout():
     logout_user()
     return redirect('/')
+
+@users.route('/profile')
+def profile():
+    form = UpdateProfileForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your profile has been updated', 'success')
+        return redirect(url_for('users.profile'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    return render_template('profile.html', title='Profile', form=form)

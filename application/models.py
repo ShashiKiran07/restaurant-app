@@ -1,6 +1,8 @@
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from application import db, login_manager
+from flask_admin.contrib.sqla import ModelView
 import os
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -35,3 +37,10 @@ class Order(db.Model):
 
     def __repr__(self):
         return f"Order('{self.user_id}', '{self.dish_id}', '{self.quantity}')"
+
+class MyModelView(ModelView):
+    def is_accessible(self):
+        if current_user.email == os.getenv('ADMIN_USER1'):
+            return current_user.is_authenticated        
+        else:
+            return False
