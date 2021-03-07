@@ -31,8 +31,8 @@ class Dish(db.Model):
 
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    dish_id = db.Column(db.Integer, db.ForeignKey('dish.id'), nullable=False)
+    user_id = db.Column(db.Integer,  nullable=False)
+    dish_id = db.Column(db.Integer,  nullable=False)
     quantity = db.Column(db.Integer, nullable=False, default=0)
 
     def __repr__(self):

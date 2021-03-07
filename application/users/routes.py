@@ -55,3 +55,9 @@ def profile():
         form.username.data = current_user.username
         form.email.data = current_user.email
     return render_template('profile.html', title='Profile', form=form)
+
+@users.route('/orders')
+def user_orders(user_id, dish_id):
+    user = User.query.filterby(id = user_id).first_or_404()
+    orders = Order.query.filterby(id = dish_id)
+    return render_template('user_orders.html', orders=orders, user=user)
