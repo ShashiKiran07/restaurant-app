@@ -18,19 +18,38 @@
     </ol>
     <div class="carousel-inner">
         {% for dish in dishes.items %}
-        <div class="carousel-item active">
-            <img src="{{ url_for('static', filename='food/'+dish.picture) }}" class="d-block w-100" alt="...">
-            <div class="carousel-inner">
-                <h5>{{ dish.name }}</h5>
-                <p>{{ dish.price }}</p>
-                <p>{{ dish.cuisine }}</p>
-                <p>{{ dish.type }}</p>
-                <p>{{ dish.id}}</p>
+        <div class="card-group">
+            <div class="card">
+                <img class="card-img-top" src="{{ url_for('static', filename='food/'+dish.picture) }}"
+                    alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ dish.name }}</h5>
+                    <p class="card-text ml-auto">{{ dish.price }}</p>
+                    <p class="card-text"><small class="text-muted">{{ dish.cuisine }}</small></p>
+                    <p class="card-text"><small class="text-muted">{{ dish.type }}</small></p>
+                    <div class="col-lg-2">
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="quantity-left-minus btn btn-danger btn-number"
+                                    data-type="minus" data-field="">
+                                    <span class="glyphicon glyphicon-minus"></span>
+                                </button>
+                            </span>
+                            <input type="text" id="quantity" name="quantity" class="form-control input-number"
+                                value="10" min="1" max="100">
+                            <span class="input-group-btn">
+                                <button type="button" class="quantity-right-plus btn btn-success btn-number"
+                                    data-type="plus" data-field="">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
         {% endfor %}
-
-
     </div>
     <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
