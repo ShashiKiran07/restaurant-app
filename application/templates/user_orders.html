@@ -1,5 +1,20 @@
 {% extends 'base.html' %}
 {% block head %}
-<title>{{ user.username }}'s Orders</title>
+<title>{{ current_user.username }}'s Orders</title>
 {% endblock %}
 {% block body %}
+{% for dish in dishes %}
+<div class="card-group">
+    <div class="card">
+        <!-- <img class="card-img-top" src="{{ url_for('static', filename='food/'+dish.picture) }}" alt="Card image cap"> -->
+        <div class="card-body">
+            <h5 class="card-title">{{ dish.name }}</h5>
+            <p class="card-text ml-auto">{{ dish.price }}</p>
+            <p class="card-text"><small class="text-muted">{{ dish.cuisine }}</small></p>
+            <p class="card-text"><small class="text-muted">{{ dish.type }}</small></p>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

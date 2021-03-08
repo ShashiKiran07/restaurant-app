@@ -56,8 +56,12 @@ def profile():
         form.email.data = current_user.email
     return render_template('profile.html', title='Profile', form=form)
 
-@users.route('/orders')
-def user_orders(user_id, dish_id):
-    user = User.query.filterby(id = user_id).first_or_404()
-    orders = Order.query.filterby(id = dish_id)
-    return render_template('user_orders.html', orders=orders, user=user)
+@users.route('/orders/<string:user_id>')
+def user_orders(user_id):
+    user = User.query.filter_by(id = user_id).first_or_404()
+    orders = Order.query.filter_by(user_id = user_id).all()
+    dishes = []
+    for order in orders:
+        dish = Dish.query.filter_by(id = order.dish_id).all()
+        dishes += dish
+    return render_template('user_orders.html', dishes=dishes)
