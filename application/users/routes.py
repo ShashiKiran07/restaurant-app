@@ -64,4 +64,9 @@ def user_orders(user_id):
     for order in orders:
         dish = Dish.query.filter_by(id = order.dish_id).all()
         dishes += dish
-    return render_template('user_orders.html', dishes=dishes)
+    return render_template('user_orders.html', orders=orders, user=user, dishes=dishes)
+
+# @users.route('/', methods = ['GET', 'POST'])
+# def order_dish():
+#     user_id = current_user.id
+#     dish_id = dish.id
