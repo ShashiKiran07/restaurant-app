@@ -10,13 +10,13 @@ main = Blueprint('main', __name__)
 @main.route('/', methods = ['GET', 'POST'])
 def home():
     dishes = Dish.query.all()
-    form = OrderForm()
-    if current_user.is_authenticated:
-        for dish in dishes:
-            if form.validate_on_submit():
-                order = Order(user_id = current_user.id, dish_id = dish.id, quantity = form.quantity.data)
-                db.session.add(order)
-                db.session.commit()
-                flash('Your Order has been placed', 'success')
-                return redirect(url_for('users.user_orders'))
-    return render_template('home.html', dishes=dishes, form=form)
+    forms = [OrderForm()]*len(dishes)
+    # if current_user.is_authenticated:
+    for form,dis in zip(forms,dishes):
+        if form.validate_on_submit():
+            order = Order(user_id = current_user.id, dish_id = dish.id, quantity = form.quantity.data)
+            db.session.add(order)
+            db.session.commit()
+            flash('Your Order has been placed', 'success')
+            return redirect(url_for('users.user_orders', user_id = current_user.id))
+    return render_template('home.html', dishes=dishes, forms = forms)
